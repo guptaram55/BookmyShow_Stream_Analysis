@@ -1,0 +1,51 @@
+{
+    "apiVersion": "2021-06-01",
+    "id": "/subscriptions/f8a30e03-62ca-4aa0-a2bb-3b0b6b1c65ef/resourceGroups/bms-rg/providers/Microsoft.Synapse/workspaces/synapselearnings01",
+    "name": "synapselearnings01",
+    "type": "microsoft.synapse/workspaces",
+    "location": "northeurope",
+    "tags": {},
+    "identity": {
+        "type": "SystemAssigned",
+        "tenantId": "39209d97-a77a-4617-995e-c962d880b1fa",
+        "principalId": "90e2dab4-7a81-449f-843e-1270dc572143"
+    },
+    "properties": {
+        "settings": {
+            "azureADOnlyAuthentication": {
+                "value": false,
+                "state": "Consistent"
+            }
+        },
+        "defaultDataLakeStorage": {
+            "resourceId": "/subscriptions/f8a30e03-62ca-4aa0-a2bb-3b0b6b1c65ef/resourceGroups/bms-rg/providers/Microsoft.Storage/storageAccounts/bmsstreamstorage",
+            "createManagedPrivateEndpoint": false,
+            "accountUrl": "https://bmsstreamstorage.dfs.core.windows.net",
+            "filesystem": "synapse-data"
+        },
+        "encryption": {
+            "doubleEncryptionEnabled": false
+        },
+        "provisioningState": "Succeeded",
+        "connectivityEndpoints": {
+            "web": "https://web.azuresynapse.net?workspace=%2fsubscriptions%2ff8a30e03-62ca-4aa0-a2bb-3b0b6b1c65ef%2fresourceGroups%2fbms-rg%2fproviders%2fMicrosoft.Synapse%2fworkspaces%2fsynapselearnings01",
+            "dev": "https://synapselearnings01.dev.azuresynapse.net",
+            "sqlOnDemand": "synapselearnings01-ondemand.sql.azuresynapse.net",
+            "sql": "synapselearnings01.sql.azuresynapse.net"
+        },
+        "managedResourceGroupName": "synapseworkspace-managedrg-61060745-f01b-49a6-87e0-1a0e8c9a9762",
+        "sqlAdministratorLogin": "ramanuja",
+        "privateEndpointConnections": [],
+        "workspaceUID": "d163287e-ed3a-43ad-bf3b-c8a143ede35e",
+        "extraProperties": {
+            "WorkspaceType": "Normal",
+            "IsScopeEnabled": false
+        },
+        "publicNetworkAccess": "Enabled",
+        "cspWorkspaceAdminProperties": {
+            "initialWorkspaceAdminObjectId": "9d02afcc-17d2-4269-9378-cbe471777fcd"
+        },
+        "azureADOnlyAuthentication": false,
+        "trustedServiceBypassEnabled": false
+    }
+}

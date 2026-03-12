@@ -1,0 +1,278 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vulnerabilityAssessments_Default_storageContainerPath": {
+            "type": "SecureString"
+        },
+        "workspaces_synapselearnings01_name": {
+            "defaultValue": "synapselearnings01",
+            "type": "String"
+        },
+        "storageAccounts_bmsstreamstorage_externalid": {
+            "defaultValue": "/subscriptions/f8a30e03-62ca-4aa0-a2bb-3b0b6b1c65ef/resourceGroups/bms-rg/providers/Microsoft.Storage/storageAccounts/bmsstreamstorage",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Synapse/workspaces",
+            "apiVersion": "2021-06-01",
+            "name": "[parameters('workspaces_synapselearnings01_name')]",
+            "location": "northeurope",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "defaultDataLakeStorage": {
+                    "resourceId": "[parameters('storageAccounts_bmsstreamstorage_externalid')]",
+                    "createManagedPrivateEndpoint": false,
+                    "accountUrl": "https://bmsstreamstorage.dfs.core.windows.net",
+                    "filesystem": "synapse-data"
+                },
+                "encryption": {},
+                "managedResourceGroupName": "synapseworkspace-managedrg-61060745-f01b-49a6-87e0-1a0e8c9a9762",
+                "sqlAdministratorLogin": "ramanuja",
+                "privateEndpointConnections": [],
+                "publicNetworkAccess": "Enabled",
+                "cspWorkspaceAdminProperties": {
+                    "initialWorkspaceAdminObjectId": "9d02afcc-17d2-4269-9378-cbe471777fcd"
+                },
+                "azureADOnlyAuthentication": false,
+                "trustedServiceBypassEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/auditingSettings",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/azureADOnlyAuthentications",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "azureADOnlyAuthentication": false
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/dedicatedSQLminimalTlsSettings",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/default')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "minimalTlsVersion": "1.2"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/extendedAuditingSettings",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/firewallRules",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/allowAll')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "255.255.255.255"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/integrationruntimes",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/AutoResolveIntegrationRuntime')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "type": "Managed",
+                "typeProperties": {
+                    "computeProperties": {
+                        "location": "AutoResolve"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/securityAlertPolicies",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/dedsqlpool')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "sku": {
+                "name": "DW100c",
+                "capacity": 0
+            },
+            "properties": {
+                "maxSizeBytes": 263882790666240,
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "storageAccountType": "GRS",
+                "provisioningState": "Succeeded"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/vulnerabilityAssessments",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                },
+                "storageContainerPath": "[parameters('vulnerabilityAssessments_Default_storageContainerPath')]"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools/auditingSettings",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/dedsqlpool/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('workspaces_synapselearnings01_name'), 'dedsqlpool')]",
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools/extendedAuditingSettings",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/dedsqlpool/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('workspaces_synapselearnings01_name'), 'dedsqlpool')]",
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools/geoBackupPolicies",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/dedsqlpool/Default')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('workspaces_synapselearnings01_name'), 'dedsqlpool')]",
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools/securityAlertPolicies",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/dedsqlpool/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('workspaces_synapselearnings01_name'), 'dedsqlpool')]",
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools/transparentDataEncryption",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/dedsqlpool/current')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('workspaces_synapselearnings01_name'), 'dedsqlpool')]",
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "status": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools/vulnerabilityAssessments",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('workspaces_synapselearnings01_name'), '/dedsqlpool/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('workspaces_synapselearnings01_name'), 'dedsqlpool')]",
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('workspaces_synapselearnings01_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        }
+    ]
+}

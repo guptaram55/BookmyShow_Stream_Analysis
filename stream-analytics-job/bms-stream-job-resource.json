@@ -1,0 +1,40 @@
+{
+    "apiVersion": "2020-03-01",
+    "id": "/subscriptions/f8a30e03-62ca-4aa0-a2bb-3b0b6b1c65ef/resourceGroups/bms-rg/providers/Microsoft.StreamAnalytics/streamingjobs/bms-stream-job",
+    "name": "bms-stream-job",
+    "type": "microsoft.streamanalytics/streamingjobs",
+    "location": "northeurope",
+    "tags": {
+        "hidden-link:/Microsoft.StreamAnalytics/streamingjobs/settings": "{\"createdFrom\":\"Portal\"}"
+    },
+    "identity": {
+        "type": "SystemAssigned",
+        "principalId": "1cb7444d-0e82-4478-bc98-904828b43ebb",
+        "tenantId": "39209d97-a77a-4617-995e-c962d880b1fa"
+    },
+    "properties": {
+        "sku": {
+            "name": "StandardV2"
+        },
+        "jobId": "7796ad2b-f300-4141-aaf4-191418f8ffd2",
+        "provisioningState": "Succeeded",
+        "jobState": "Stopped",
+        "outputStartMode": "JobStartTime",
+        "outputStartTime": "2026-03-11T19:43:00.283Z",
+        "lastOutputEventTime": "2026-03-11T19:52:03.747Z",
+        "eventsOutOfOrderPolicy": "Adjust",
+        "outputErrorPolicy": "Stop",
+        "eventsOutOfOrderMaxDelayInSeconds": 0,
+        "eventsLateArrivalMaxDelayInSeconds": 5,
+        "dataLocale": "en-US",
+        "createdDate": "2026-03-11T17:42:05.473Z",
+        "compatibilityLevel": "1.2",
+        "jobStorageAccount": {
+            "authenticationMode": "ConnectionString",
+            "accountName": "bmsstreamstorage"
+        },
+        "contentStoragePolicy": "SystemAccount",
+        "jobType": "Cloud",
+        "cluster": null
+    }
+}

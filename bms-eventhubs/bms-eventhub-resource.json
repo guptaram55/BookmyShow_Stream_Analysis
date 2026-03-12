@@ -1,0 +1,44 @@
+{
+    "apiVersion": "2025-05-01-preview",
+    "id": "/subscriptions/f8a30e03-62ca-4aa0-a2bb-3b0b6b1c65ef/resourceGroups/bms-rg/providers/Microsoft.EventHub/namespaces/bmseventhub",
+    "name": "bmseventhub",
+    "type": "microsoft.eventhub/namespaces",
+    "sku": {
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 1
+    },
+    "location": "northeurope",
+    "tags": {},
+    "properties": {
+        "platformCapabilities": {
+            "confidentialCompute": {
+                "mode": "Disabled"
+            }
+        },
+        "errors": [],
+        "geoDataReplication": {
+            "maxReplicationLagDurationInSeconds": 0,
+            "locations": [
+                {
+                    "locationName": "northeurope",
+                    "roleType": "Primary",
+                    "replicaState": "Ready"
+                }
+            ]
+        },
+        "minimumTlsVersion": "1.2",
+        "publicNetworkAccess": "Enabled",
+        "disableLocalAuth": false,
+        "zoneRedundant": true,
+        "isAutoInflateEnabled": false,
+        "maximumThroughputUnits": 0,
+        "kafkaEnabled": true,
+        "provisioningState": "Succeeded",
+        "status": "Active",
+        "createdAt": "2026-03-11T15:14:23.274Z",
+        "updatedAt": "2026-03-11T15:14:45Z",
+        "metricId": "f8a30e03-62ca-4aa0-a2bb-3b0b6b1c65ef:bmseventhub",
+        "serviceBusEndpoint": "https://bmseventhub.servicebus.windows.net:443/"
+    }
+}

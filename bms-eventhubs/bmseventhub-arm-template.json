@@ -1,0 +1,177 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "namespaces_bmseventhub_name": {
+            "defaultValue": "bmseventhub",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.EventHub/namespaces",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[parameters('namespaces_bmseventhub_name')]",
+            "location": "northeurope",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": 1
+            },
+            "properties": {
+                "platformCapabilities": {
+                    "confidentialCompute": {
+                        "mode": "Disabled"
+                    }
+                },
+                "geoDataReplication": {
+                    "maxReplicationLagDurationInSeconds": 0,
+                    "locations": [
+                        {
+                            "locationName": "northeurope",
+                            "roleType": "Primary"
+                        }
+                    ]
+                },
+                "minimumTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "disableLocalAuth": false,
+                "zoneRedundant": true,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": true
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/authorizationrules",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/RootManageSharedAccessKey')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/bookingstopic')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {
+                "messageTimestampDescription": {
+                    "timestampType": "LogAppend"
+                },
+                "retentionDescription": {
+                    "cleanupPolicy": "Delete",
+                    "retentionTimeInHours": 10
+                },
+                "messageRetentionInDays": 1,
+                "partitionCount": 1,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/paymentstopic')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {
+                "messageTimestampDescription": {
+                    "timestampType": "LogAppend"
+                },
+                "retentionDescription": {
+                    "cleanupPolicy": "Delete",
+                    "retentionTimeInHours": 10
+                },
+                "messageRetentionInDays": 1,
+                "partitionCount": 1,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/networkrulesets",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/default')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "defaultAction": "Allow",
+                "virtualNetworkRules": [],
+                "ipRules": [],
+                "trustedServiceAccessEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/bookingstopic/bookingpolicy')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_bmseventhub_name'), 'bookingstopic')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Manage",
+                    "Listen",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/paymentstopic/paymentspolicy')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_bmseventhub_name'), 'paymentstopic')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Manage",
+                    "Listen",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/bookingstopic/$Default')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_bmseventhub_name'), 'bookingstopic')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2025-05-01-preview",
+            "name": "[concat(parameters('namespaces_bmseventhub_name'), '/paymentstopic/$Default')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_bmseventhub_name'), 'paymentstopic')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_bmseventhub_name'))]"
+            ],
+            "properties": {}
+        }
+    ]
+}
