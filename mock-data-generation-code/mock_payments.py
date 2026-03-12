@@ -7,7 +7,7 @@ from faker import Faker
 fake = Faker()
 
 # Initialize Event Hub client
-event_hub_connection_str = 'Endpoint=sb://bmseventhub.servicebus.windows.net/;SharedAccessKeyName=paymentspolicy;SharedAccessKey=teQl+/Bojj8bSqMzTsCpU/qBgHJrLlqOJ+AEhPWhL0A=;EntityPath=paymentstopic'
+event_hub_connection_str = 'EVENT_HUB_CONNECTION_STRING'
 event_hub_name = 'paymentstopic'
 
 producer = EventHubProducerClient.from_connection_string(
